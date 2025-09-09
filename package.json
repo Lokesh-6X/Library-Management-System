@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Lokesh-6X/Library-Management-System/issues"
   },
-  "homepage": "https://github.com/Lokesh-6X/Library-Management-System#readme"
+  "homepage": "https://github.com/Lokesh-6X/Library-Management-System#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }
