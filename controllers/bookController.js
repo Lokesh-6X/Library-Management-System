@@ -6,7 +6,7 @@ const Book = require("../models/bookModel");
 const createBook = async (req, res) => {
   const { title, author } = req.body;
   if (!title || !author) {
-    res.status(400);
+    res.status(400).json({message:"All fields are mandatory"});
   }
   const book = await Book.create({
     title,
@@ -14,6 +14,30 @@ const createBook = async (req, res) => {
   });
   res.status(200).json(book);
 };
+
+//@desc Get book by id
+//@route GET /api/books?title
+//@route GET /api/books?id
+//@access public
+// const searchBook = async (req, res) => {
+//   const { id, title } = req.query;
+
+//     if (id) {
+//       const book = await Book.findById(id);
+//       if (!book) return res.status(404).json({ message: "Book not found" });
+//       return res.status(200).json(book);
+//     }
+
+//     if (title) {
+//       const books = await Book.find({ title });
+//       if (books.length === 0) {
+//         return res.status(404).json({ message: "No books found with this title" });
+//       }
+//       return res.status(200).json(books);
+//     }
+
+//     return res.status(400).json({ message: "Please provide id or title in query" });
+// };
 
 //@desc Get book by id
 //@route GET /api/books/id/:id
@@ -26,15 +50,20 @@ const getBookById = async (req, res) => {
   res.status(200).json(book);
 };
 
-//@desc Get book by name
+//@desc Get book by title
 //@route GET /api/books/title/:title
 //@access public
 const getBookByTitle = async (req, res) => {
-  const book = await Book.findOne({ title: req.params.title });
-  if (!book) {
+  const arrBook = await Book.find({
+    title: new RegExp(req.params.title, "i"),
+  });
+  // const arrBook = await Book.find({
+  //   title: {$regex req.params.title},
+  // });        
+  if (!arrBook) {
     res.status(404);
   }
-  res.status(200).json(book);
+  res.status(200).send(arrBook);
 };
 
 //@desc Get all books
