@@ -1,4 +1,5 @@
 const Book = require("../models/bookModel");
+const jwt = require("jsonwebtoken");
 
 //@desc Add a Book
 //@route POST /api/books/
@@ -114,7 +115,28 @@ const deleteBook = async (req, res) => {
   res.status(200).json(deleteBook);
 };
 
-module.exports = {createBook, getBookById, getBookByTitle, getBooks, getBooksByLimitAndOffset, updateBook, deleteBook};
+const login = async (req,res) => {
+  const {author, id} = req.body;
+  if(!author || !id){
+    res.status(404).json({message: "Enter all the fields"});
+  }
+  const book = await Book.find({
+    author: author,
+    id: id
+  })
+  if(!book){
+    res.status(404).json({message: "Invaild author/id"});
+  }
+  res.status(200).json({
+    message: "Login Successfull",
+    token: jwt.sign({author, id}, process.env.SECRET_KEY, {
+      expiresIn: "3600",
+    }),
+  });
+}
+
+
+module.exports = {createBook, getBookById, getBookByTitle, getBooks, getBooksByLimitAndOffset, updateBook, deleteBook, login};
 
 
 

@@ -11,5 +11,6 @@ router.route("/").get(getBooksByLimitAndOffset)
 router.route("/").get(getBooks);
 router.route("/:id").put(updateBook);
 router.route("/:id").delete(deleteBook);
+router.route("/")
 
 module.exports = router;

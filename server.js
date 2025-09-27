@@ -8,6 +8,7 @@ connectDB();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use("/api/login", require("./routes/authRoute"));
 app.use("/api/books", require("./routes/bookRoute"));
 
 
