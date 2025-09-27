@@ -70,7 +70,20 @@ const getBookByTitle = async (req, res) => {
 //@route GET /api/books/
 //@access public
 const getBooks = async (req, res) => {
-  const book = await Book.find();
+  const book = await Book.find().limit(2).skip(2);
+  res.status(200).json(book);
+};
+
+//@desc Get all books with limit and offset
+//@route GET /api/books?limit=10&offset=20;
+//@access public
+const getBooksByLimitAndOffset = async (req, res) => {
+  const limit = parseInt(req.query.limit);
+  const offset = parseInt(req.query.offset);
+  const book = await Book.find().skip(offset).limit(limit);
+  if(!book){
+    res.status(404);
+  }
   res.status(200).json(book);
 };
 
@@ -101,7 +114,7 @@ const deleteBook = async (req, res) => {
   res.status(200).json(deleteBook);
 };
 
-module.exports = {createBook, getBookById, getBookByTitle, getBooks, updateBook, deleteBook};
+module.exports = {createBook, getBookById, getBookByTitle, getBooks, getBooksByLimitAndOffset, updateBook, deleteBook};
 
 
 
